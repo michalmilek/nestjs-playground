@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/register-user';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
@@ -16,11 +16,11 @@ import { User } from './entities/user.entity';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('/register')
+  /*   @Post('/register')
   async register(@Body() createUserDto: CreateUserDto): Promise<User> {
     const user = await this.userService.register(createUserDto);
     return user;
-  }
+  } */
 
   /*   @Get()
   findAll() {

@@ -1,5 +1,9 @@
-import { Injectable, ConflictException } from '@nestjs/common';
-import { CreateUserDto } from './dto/register-user';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -14,14 +18,15 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password, username } = createUserDto;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { email, username } = createUserDto;
 
     const existingUserWithEmail = await this.userRepository.findOne({
       where: {
         email,
       },
     });
+
     const existingUserWithUsername = await this.userRepository.findOne({
       where: {
         username,
@@ -29,24 +34,29 @@ export class UserService {
     });
 
     if (existingUserWithEmail) {
-      throw new ConflictException('User with provided email already exists.');
+      throw new Error('User with this email already exists');
     }
-    if (existingUserWithUsername) {
-      throw new ConflictException(
-        'User with provided username already exists.',
-      );
-    }
-    const saltOrRounds = 10;
-    const hash = await bcrypt.hash(password, saltOrRounds);
 
-    const newUser = this.userRepository.create({
-      username,
-      email,
-      password: hash,
+    if (existingUserWithUsername) {
+      throw new Error('User with this username already exists');
+    }
+
+    const newUser = this.userRepository.create(createUserDto);
+
+    return this.userRepository.save(newUser);
+  }
+
+  async findOne(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
     });
 
-    const savedUser = await this.userRepository.save(newUser);
+    if (!user) {
+      throw new NotFoundException('User with provided email doesnt exist.');
+    }
 
-    return plainToClass(User, savedUser, { excludeExtraneousValues: true });
+    return user;
   }
 }

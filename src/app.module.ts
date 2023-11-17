@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagModule } from './tag/tag.module';
-import { configuration } from './config/configuration';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { DatabaseModule } from './providers/database.module';
 import { UserModule } from './user/user.module';
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -26,6 +21,7 @@ import { UserModule } from './user/user.module';
     }),
     TagModule,
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
