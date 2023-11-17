@@ -6,6 +6,7 @@ import { configuration } from './config/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './providers/database.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DatabaseModule } from './providers/database.module';
       }),
     }),
     TagModule,
+    UserModule,
   ],
 })
 export class AppModule {}
