@@ -8,6 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
 import { SignInDto } from './dto/sign-in.dto';
 import * as bcrypt from 'bcrypt';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { TokenType } from './types/token';
 
 @Injectable()
 export class AuthService {
@@ -46,13 +48,23 @@ export class AuthService {
     return { access_token, refresh_token };
   }
   signOut() {}
-  refresh() {}
 
-  private generateAccessToken(user: User): string {
+  async refresh(email: string): Promise<{ access_token: string }> {
+    try {
+      const user = await this.userService.findOne(email);
+
+      const token = this.generateAccessToken(user);
+      return { access_token: token };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  generateAccessToken(user: User): string {
     const payload = { email: user.email, sub: user.id };
     return this.jwtService.sign(payload, {
       secret: 'access',
-      expiresIn: '5m', // Set the expiration time for the access token
+      expiresIn: '5m',
     });
   }
 
@@ -60,7 +72,7 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id };
     return this.jwtService.sign(payload, {
       secret: 'secret',
-      expiresIn: '7d', // Set the expiration time for the refresh token
+      expiresIn: '7d',
     });
   }
 }
