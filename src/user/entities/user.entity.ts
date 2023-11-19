@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Auth } from 'src/auth/entities/auth.entity';
+import { Article } from 'src/article/entities/article.entity';
 
 @Entity()
 @Unique(['username', 'email'])
@@ -30,7 +31,7 @@ export class User {
   image: string;
 
   @Exclude()
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @BeforeInsert()
@@ -40,4 +41,7 @@ export class User {
 
   @OneToMany(() => Auth, (rfrTokens) => rfrTokens.user)
   refreshTokens: string[];
+
+  @OneToMany(() => Auth, (article) => article.user)
+  article: Article[];
 }

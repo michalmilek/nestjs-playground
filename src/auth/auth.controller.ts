@@ -31,6 +31,7 @@ export class AuthController {
     return this.authService.signIn(dto);
   }
 
+  @Public()
   @UseGuards(RefreshAuthGuard)
   @Post('/refresh-token')
   refresh(@Body() dto: RefreshTokenDto, @Request() req) {

@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagModule } from './tag/tag.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ArticleModule } from './article/article.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     TagModule,
     UserModule,
     AuthModule,
+    ArticleModule,
   ],
 })
 export class AppModule {}
