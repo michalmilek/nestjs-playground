@@ -24,6 +24,12 @@ export class UserController {
     return 'current user';
   }
 
+  @UseGuards(AuthGuard)
+  @Get('all')
+  getAllUsers() {
+    return this.userService.findAll();
+  }
+
   /*   @Post('/register')
   async register(@Body() createUserDto: CreateUserDto): Promise<User> {
     const user = await this.userService.register(createUserDto);

@@ -1,4 +1,5 @@
 import slugify from 'slugify';
+import { Like } from 'src/likes/entities/like.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   BeforeInsert,
@@ -7,6 +8,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -41,6 +43,11 @@ export class Article {
 
   @ManyToOne(() => User, (user) => user.article, { eager: true })
   user: User;
+
+  @OneToMany(() => Like, (like) => like.article, {
+    cascade: true,
+  })
+  like: Like[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/entities/user.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { LikesModule } from 'src/likes/likes.module';
 
 @Module({
   controllers: [ArticleController],
@@ -19,6 +20,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
       useClass: AuthGuard,
     },
   ],
-  imports: [TypeOrmModule.forFeature([Article, User]), UserModule],
+  imports: [TypeOrmModule.forFeature([Article, User]), UserModule, LikesModule],
+  exports: [ArticleService],
 })
 export class ArticleModule {}

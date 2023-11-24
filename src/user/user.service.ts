@@ -59,4 +59,10 @@ export class UserService {
 
     return user;
   }
+
+  async findAll() {
+    const users = await this.userRepository.find();
+
+    return users;
+  }
 }

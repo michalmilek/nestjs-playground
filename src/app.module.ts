@@ -4,6 +4,8 @@ import { TagModule } from './tag/tag.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
+import { LikesModule } from './likes/likes.module';
+import { FollowersModule } from './followers/followers.module';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -24,6 +26,8 @@ import { ArticleModule } from './article/article.module';
     UserModule,
     AuthModule,
     ArticleModule,
+    LikesModule,
+    FollowersModule,
   ],
 })
 export class AppModule {}
